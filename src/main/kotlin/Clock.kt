@@ -86,6 +86,7 @@ private fun CRC2D.drawPointer(hours: Int, minutes: Int, seconds: Int) {
 
 //绘制秒针线条
 private fun CRC2D.drawSecondsLine(seconds: Int) {
+    save()
     beginPath()
     lineWidth = 3.0
     fillStyle = "#f00"
@@ -95,20 +96,24 @@ private fun CRC2D.drawSecondsLine(seconds: Int) {
     lineTo(1.0, -radius + 18)
     lineTo(-1.0, -radius + 18)
     fill()
+    restore()
 }
 
 //绘制分针线条
 private fun CRC2D.drawMinutesLine(minutes: Int) {
+    save()
     beginPath()
     lineWidth = 4.0
     rotate(2 * PI / 60 * minutes)
     moveTo(0.0, 14.0)
     lineTo(0.0, -radius + 38)
     stroke()
+    restore()
 }
 
 //绘制时针线条
 private fun CRC2D.drawHoursLine(hours: Int, minutes: Int) {
+    save()
     beginPath()
     lineCap = CanvasLineCap.ROUND
     val rad = 2 * PI / 12 * hours
@@ -117,4 +122,5 @@ private fun CRC2D.drawHoursLine(hours: Int, minutes: Int) {
     moveTo(0.0, 10.0)
     lineTo(0.0, -radius / 2)
     stroke()
+    restore()
 }
