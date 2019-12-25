@@ -1,0 +1,44 @@
+group 'org.github.ikfr.clock'
+version '0.1'
+
+buildscript {
+    ext.kotlin_version = '1.3.60'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'kotlin2js'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+}
+
+task assembleWeb() {
+    configurations.implementation.setCanBeResolved(true)
+    configurations.implementation.each { File file ->
+        if (file.path.indexOf('kotlin-stdlib-js') >= 0) {
+            exec {
+                workingDir "$projectDir/web"
+                standardOutput = new ByteArrayOutputStream()
+                commandLine "7z", "e", file.absolutePath, "kotlin.js", "-aos", "-r"
+            }
+        }
+    }
+    dependsOn classes
+}
+
+assemble.dependsOn assembleWeb
+
+compileKotlin2Js {
+    kotlinOptions.outputFile = "${projectDir}/web/output/app.js"
+}
